@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Autofac;
+using ScheduleMyFood.IoC;
+using ScheduleMyFood.Main;
 using Xamarin.Forms;
 
 namespace ScheduleMyFood
@@ -11,20 +13,12 @@ namespace ScheduleMyFood
     {
         public App()
         {
+            var container = new AppContainer().CreateContainer();
             // The root page of your application
-            MainPage = new ContentPage
+            using (var scope = container.BeginLifetimeScope())
             {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
+                MainPage = scope.Resolve<MainPage>();
+            }
         }
 
         protected override void OnStart()
