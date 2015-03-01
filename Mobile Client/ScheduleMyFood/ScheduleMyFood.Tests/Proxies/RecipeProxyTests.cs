@@ -35,7 +35,7 @@ namespace ScheduleMyFood.Tests.Proxies
                 .Setup(client => client.GetAsync<List<Recipe>>("recipes"))
                 .ReturnsAsync(testCollection);
 
-            _sut.Get().Should().BeSameAs(testCollection);
+            _sut.Get().Result.Should().BeSameAs(testCollection);
 
             ServiceMocks.FoodHttpClient
                 .Verify(client => client.GetAsync<List<Recipe>>("recipes"), Times.AtMostOnce);
