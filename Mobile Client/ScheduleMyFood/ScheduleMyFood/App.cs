@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Autofac;
+﻿using Autofac;
 using ScheduleMyFood.IoC;
 using ScheduleMyFood.Main;
 using Xamarin.Forms;

@@ -55,15 +55,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IoC\IoCContainer.cs" />
-    <Compile Include="IoC\ViewModelRegistration.cs" />
+    <Compile Include="IoC\AppContainerTests.cs" />
+    <Compile Include="ServiceMocks.cs" />
+    <Compile Include="Main\ViewModelTestIoCContainer.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
+    <Compile Include="Proxies\ProxyTestIoCContainer.cs" />
+    <Compile Include="Proxies\RecipeProxyTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\WebAPI\SharedSchema\SharedSchema.csproj">
+      <Project>{8E551DF8-8051-4D2C-B0E8-FFFFF779F4B5}</Project>
+      <Name>SharedSchema</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScheduleMyFood\ScheduleMyFood.csproj">
       <Project>{278595dd-9951-47e1-a722-983b192d604f}</Project>
       <Name>ScheduleMyFood</Name>

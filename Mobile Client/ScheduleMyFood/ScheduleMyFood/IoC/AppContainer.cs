@@ -3,7 +3,7 @@ using Autofac;
 
 namespace ScheduleMyFood.IoC
 {
-    class AppContainer
+    public class AppContainer
     {
         public IContainer CreateContainer()
         {
