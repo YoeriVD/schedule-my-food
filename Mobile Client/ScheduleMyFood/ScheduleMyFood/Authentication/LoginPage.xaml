@@ -9,5 +9,6 @@
     <Entry Text="{Binding Password}" IsPassword="True"></Entry>
     <Button Text="Login" Command="{Binding PerformLogin}"></Button>
     <Button Text="Register" Command="{Binding PerformRegister}"></Button>
+    <ActivityIndicator IsRunning="{Binding IsBusy}"></ActivityIndicator>
   </StackLayout>
 </ContentPage>

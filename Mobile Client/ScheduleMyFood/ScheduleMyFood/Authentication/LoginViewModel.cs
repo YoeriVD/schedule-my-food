@@ -1,12 +1,15 @@
-﻿using System.Net.Http;
+﻿using System.ComponentModel;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using ScheduleMyFood.Annotations;
 using ScheduleMyFood.Technical;
 using ScheduleMyFood.Technical.Auth;
 using Xamarin.Forms;
 
 namespace ScheduleMyFood.Authentication
 {
-    public interface ILoginViewModel
+    public interface ILoginViewModel : INotifyPropertyChanged
     {
         string Email { get; set; }
         string Password { get; set; }
@@ -19,25 +22,40 @@ namespace ScheduleMyFood.Authentication
     {
         private readonly HttpClient _client;
         private readonly IAuthenticationClient _authenticationClient;
+        private readonly ITokenManager _tokenManager;
+        private bool _isBusy;
         public string Email { get; set; }
         public string Password { get; set; }
 
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand PerformRegister => new Command(async () =>
         {
+            IsBusy = true;
             await _authenticationClient.Register(Email, Password);
             PerformLogin.Execute(null);
-        });
+        }, () => !IsBusy);
 
         public ICommand PerformLogin => new Command(async () =>
         {
-            var token = await _authenticationClient.GetTokenFromEndPoint(Email, Password);
+            IsBusy = true;
+            var localToken = await _tokenManager.GetSavedTokenResponseModelOrDefault();
+            var token = localToken?.AccessToken ?? await _authenticationClient.GetTokenFromEndPoint(Email, Password);
             _client.SetAuthenticationToken(token);
             NavigateToRecipes.Execute(null);
-        });
+        }, () => !IsBusy);
 
         public ICommand NavigateToRecipes { get; set; }
 
-        public LoginViewModel(HttpClient client, IAuthenticationClient authenticationClient)
+        public LoginViewModel(HttpClient client, IAuthenticationClient authenticationClient, ITokenManager tokenManager)
         { 
 #if DEBUG
             Email = "test@test.be";
@@ -45,6 +63,15 @@ namespace ScheduleMyFood.Authentication
 #endif
             _client = client;
             _authenticationClient = authenticationClient;
+            _tokenManager = tokenManager;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
