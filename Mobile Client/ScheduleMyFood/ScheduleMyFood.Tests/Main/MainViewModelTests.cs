@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using ScheduleMyFood.Main;
-using ScheduleMyFood.Tests.IoC;
+using ScheduleMyFood.Recipes;
 
 namespace ScheduleMyFood.Tests.Main
 {

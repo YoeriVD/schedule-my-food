@@ -16,7 +16,6 @@ namespace ScheduleMyFood.Tests.Proxies
                 .Where(t => t.Name.EndsWith("Proxy"))
                 .AsImplementedInterfaces();
 
-            builder.RegisterInstance(ServiceMocks.FoodHttpClient.Object);
 
             Container = builder.Build();
         }

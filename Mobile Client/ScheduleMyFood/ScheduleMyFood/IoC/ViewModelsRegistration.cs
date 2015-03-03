@@ -10,7 +10,7 @@ namespace ScheduleMyFood.IoC
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("ViewModel"))
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }

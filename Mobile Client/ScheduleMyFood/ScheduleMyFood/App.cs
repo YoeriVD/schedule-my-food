@@ -1,19 +1,30 @@
 ﻿using Autofac;
+using ScheduleMyFood.Authentication;
 using ScheduleMyFood.IoC;
-using ScheduleMyFood.Main;
 using Xamarin.Forms;
 
 namespace ScheduleMyFood
 {
     public class App : Application
     {
+        internal static class Constants
+        {
+            internal const string BaseUrl = "http://schedule-my-food.azurewebsites.net";
+            internal const string ApplicationJson = "application/json";
+        }
+        private readonly IContainer _container;
+
         public App()
         {
-            var container = new AppContainer().CreateContainer();
+            _container = new AppContainer().CreateContainer();
             // The root page of your application
-            using (var scope = container.BeginLifetimeScope())
+            MainPage = new NavigationPage(GetPage<LoginPage>());
+        }
+        internal Page GetPage<T>() where T : Page
+        {
+            using (var scope = _container.BeginLifetimeScope())
             {
-                MainPage = scope.Resolve<MainPage>();
+                return scope.Resolve<T>();
             }
         }
 
@@ -31,5 +42,7 @@ namespace ScheduleMyFood
         {
             // Handle when your app resumes
         }
+
+
     }
 }

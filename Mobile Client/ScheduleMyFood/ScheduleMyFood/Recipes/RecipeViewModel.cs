@@ -1,19 +1,17 @@
-﻿using System.Collections.ObjectModel;
-using ScheduleMyFood.Proxies;
-using SharedSchema;
+﻿using ScheduleMyFood.Proxies;
 
-namespace ScheduleMyFood.Main
+namespace ScheduleMyFood.Recipes
 {
     public interface IMainViewModel
     {
         IRecipeProxy RecipeProxy { get; }
     }
 
-    class MainViewModel : IMainViewModel
+    class RecipeViewModel : IMainViewModel
     {
         public IRecipeProxy RecipeProxy { get; private set; }
 
-        public MainViewModel(IRecipeProxy recipeProxy)
+        public RecipeViewModel(IRecipeProxy recipeProxy)
         {
             RecipeProxy = recipeProxy;
         }

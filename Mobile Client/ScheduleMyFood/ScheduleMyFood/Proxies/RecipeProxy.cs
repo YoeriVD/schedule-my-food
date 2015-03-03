@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ScheduleMyFood.Annotations;
@@ -18,7 +19,7 @@ namespace ScheduleMyFood.Proxies
 
     class RecipeProxy : IRecipeProxy
     {
-        private readonly IFoodHttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private ObservableCollection<Recipe> _localCollection;
         private const string RecipesResourceName = "recipes";
 
@@ -44,7 +45,7 @@ namespace ScheduleMyFood.Proxies
             }
         }
 
-        public RecipeProxy(IFoodHttpClient httpClient)
+        public RecipeProxy(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

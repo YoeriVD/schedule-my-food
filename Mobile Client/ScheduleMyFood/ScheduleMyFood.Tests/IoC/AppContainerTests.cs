@@ -1,9 +1,10 @@
 ﻿using Autofac;
 using FluentAssertions;
 using NUnit.Framework;
+using ScheduleMyFood.Authentication;
 using ScheduleMyFood.IoC;
 using ScheduleMyFood.Proxies;
-using ScheduleMyFood.Technical;
+using ScheduleMyFood.Recipes;
 
 namespace ScheduleMyFood.Tests.IoC
 {
@@ -24,9 +25,14 @@ namespace ScheduleMyFood.Tests.IoC
             _sut.Dispose();
         }
         [Test]
-        public void Container_should_be_able_to_resolve_FoodHttpClient()
+        public void Container_should_be_able_to_resolve_LoginViewModel()
         {
-            _sut.Resolve<IFoodHttpClient>().Should().NotBeNull();
+            _sut.Resolve<ILoginViewModel>().Should().NotBeNull();
+        }
+        [Test]
+        public void Container_should_be_able_to_resolve_RecipeViewModel()
+        {
+            _sut.Resolve<IMainViewModel>().Should().NotBeNull();
         }
 
         [Test]
