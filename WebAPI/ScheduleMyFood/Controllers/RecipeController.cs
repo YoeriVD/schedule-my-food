@@ -7,9 +7,10 @@ using SharedSchema;
 namespace ScheduleMyFood.Controllers
 {
     [RoutePrefix("recipes")]
+    [Authorize]
     public class RecipeController : ApiController
     {
-        private static readonly List<Recipe> _recipes = new List<Recipe>
+        private static readonly List<Recipe> Recipes = new List<Recipe>
             {
                 new Recipe() { Name = "Lasagna"},
                 new Recipe() { Name = "Croque monsieur"},
@@ -24,29 +25,28 @@ namespace ScheduleMyFood.Controllers
         [Route("")]
         public IEnumerable<Recipe> Get()
         {
-            return _recipes;
+            return Recipes;
         }
         [Route("{name}")]
         public IHttpActionResult Get(string name)
         {
-            var recipe = _recipes.SingleOrDefault(rec => rec.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            var recipe = Recipes.SingleOrDefault(rec => rec.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
             if (recipe == null)
             {
                 return NotFound();
             }
             return Ok(recipe);
         }
-        //[Authorize]
         [Route("")]
         public IHttpActionResult Post(Recipe recipe)
         {
             if (ModelState.IsValid)
             {
-                if(_recipes.Any(rec => rec.Name.Equals(recipe.Name, StringComparison.InvariantCultureIgnoreCase)))
+                if(Recipes.Any(rec => rec.Name.Equals(recipe.Name, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return BadRequest("a recipe with this name already exists");
                 }
-                _recipes.Add(recipe);
+                Recipes.Add(recipe);
                 return Created("api/recipes/" + recipe.Name, recipe);
             }
             return BadRequest(ModelState);
