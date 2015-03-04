@@ -18,7 +18,7 @@ namespace ScheduleMyFood.WinPhone.DependencyServices
             return loadTextAsync.Result;
         }
 
-        private static async Task<string> LoadTextAsync(string filename)
+        public static async Task<string> LoadTextAsync(string filename)
         {
             var local = ApplicationData.Current.LocalFolder;
             if (local == null) return "";

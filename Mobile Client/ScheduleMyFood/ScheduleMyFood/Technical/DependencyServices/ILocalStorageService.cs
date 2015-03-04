@@ -6,5 +6,6 @@ namespace ScheduleMyFood.Technical.DependencyServices
     {
         string LoadText(string filename);
         void SaveText(string filename, string text);
+        Task<string> LoadTextAsync(string filename);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using ScheduleMyFood.Droid.DependencyServices;
 using ScheduleMyFood.Technical.DependencyServices;
 using Xamarin.Forms;
@@ -31,6 +32,11 @@ namespace ScheduleMyFood.Droid.DependencyServices
             var filePath = Path.Combine(documentsPath, filename);
             if(File.Exists(filePath)) return File.ReadAllText(filePath);
             throw new FileNotFoundException();
+        }
+
+        public Task<string> LoadTextAsync(string filename)
+        {
+            return Task.Run(() => LoadText(filename));
         }
     }
 }
