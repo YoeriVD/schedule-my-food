@@ -22,11 +22,18 @@ namespace ScheduleMyFood.WinPhone.DependencyServices
         {
             var local = ApplicationData.Current.LocalFolder;
             if (local == null) return "";
-            var file = await local.GetItemAsync(filename);
-            using (var streamReader = new StreamReader(file.Path))
+            try
             {
-                var text = streamReader.ReadToEnd();
-                return text;
+                var file = await local.GetItemAsync(filename);
+                using (var streamReader = new StreamReader(file.Path))
+                {
+                    var text = streamReader.ReadToEnd();
+                    return text;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return "";
             }
         }
 
