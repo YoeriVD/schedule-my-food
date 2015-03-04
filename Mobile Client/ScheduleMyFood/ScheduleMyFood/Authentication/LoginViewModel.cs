@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -15,9 +16,10 @@ namespace ScheduleMyFood.Authentication
     {
         string Email { get; set; }
         string Password { get; set; }
-        ICommand PerformRegister { get;  }
-        ICommand PerformLogin { get;  }
+        ICommand PerformRegister { get; }
+        ICommand PerformLogin { get; }
         ICommand NavigateToRecipes { get; set; }
+        Action<string> ShowError { get; set; }
     }
 
     class LoginViewModel : ILoginViewModel
@@ -50,21 +52,24 @@ namespace ScheduleMyFood.Authentication
         {
             IsBusy = true;
             TokenResponseModel localToken = null;
-           try
+            try
             {
                 localToken = await _tokenManager.GetSavedTokenResponseModelOrDefault();
             }
-            catch (FileNotFoundException) { /* do nothing (token does not yet exist) */}
-
+            catch (FileNotFoundException)
+            {/* do nothing (token does not yet exist) */}
+            catch (Exception e)
+            { ShowError(e.Message); }
             var token = localToken?.AccessToken ?? await _authenticationClient.GetTokenFromEndPoint(Email, Password);
             _client.SetAuthenticationToken(token);
             NavigateToRecipes.Execute(null);
         }, () => !IsBusy);
 
         public ICommand NavigateToRecipes { get; set; }
+        public Action<string> ShowError { get; set; }
 
         public LoginViewModel(HttpClient client, IAuthenticationClient authenticationClient, ITokenManager tokenManager)
-        { 
+        {
 #if DEBUG
             Email = "test@test.be";
             Password = "test123";

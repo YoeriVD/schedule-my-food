@@ -11,7 +11,14 @@ namespace ScheduleMyFood.WinPhone.DependencyServices
 {
     class LocalStorageServiceWinP : ILocalStorageService
     {
-        public async Task<string> LoadTextAsync(string filename)
+        public string LoadText(string filename)
+        {
+            var loadTextAsync = LoadTextAsync(filename);
+            loadTextAsync.Wait();
+            return loadTextAsync.Result;
+        }
+
+        private static async Task<string> LoadTextAsync(string filename)
         {
             var local = ApplicationData.Current.LocalFolder;
             if (local == null) return "";
@@ -22,7 +29,13 @@ namespace ScheduleMyFood.WinPhone.DependencyServices
                 return text;
             }
         }
-        public async Task SaveTextAsync(string filename, string text)
+
+        public void SaveText(string filename, string text)
+        {
+            SaveTextAsync(filename, text).Wait();
+        }
+
+        private static async Task SaveTextAsync(string filename, string text)
         {
             var local = ApplicationData.Current.LocalFolder;
             var file = await local.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
