@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using ScheduleMyFood.Annotations;
 using ScheduleMyFood.Technical;
 using ScheduleMyFood.Technical.Auth;
+using ScheduleMyFood.Technical.Auth.Models;
 using Xamarin.Forms;
 
 namespace ScheduleMyFood.Authentication
@@ -47,7 +49,13 @@ namespace ScheduleMyFood.Authentication
         public ICommand PerformLogin => new Command(async () =>
         {
             IsBusy = true;
-            var localToken = await _tokenManager.GetSavedTokenResponseModelOrDefault();
+            TokenResponseModel localToken = null;
+           try
+            {
+                localToken = await _tokenManager.GetSavedTokenResponseModelOrDefault();
+            }
+            catch (FileNotFoundException) { /* do nothing (token does not yet exist) */}
+
             var token = localToken?.AccessToken ?? await _authenticationClient.GetTokenFromEndPoint(Email, Password);
             _client.SetAuthenticationToken(token);
             NavigateToRecipes.Execute(null);
