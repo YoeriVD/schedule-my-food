@@ -14,7 +14,7 @@ namespace ScheduleMyFood.IoC
                 .AsImplementedInterfaces();
             builder.Register(c =>
             {
-                var client = new HttpClient {BaseAddress = new Uri("http://schedule-my-food.azurewebsites.net")};
+                var client = new HttpClient {BaseAddress = new Uri(App.Constants.BaseUrl)};
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(App.Constants.ApplicationJson));
                 return client;
             }).SingleInstance();
